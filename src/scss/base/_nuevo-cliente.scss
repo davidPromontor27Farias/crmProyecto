@@ -1,0 +1,58 @@
+.cliente-informacion{
+
+    h1{
+        text-align: center;
+    }
+
+    .contenedor-formulario{
+        
+        max-width: 30rem;
+        margin: 0 auto;
+        background-color: rgb(252, 248, 248, .3);
+        padding: 2rem;
+        border-radius: .5rem;
+        margin-top: 5rem;
+        margin-bottom: 5rem;
+        -webkit-box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.3);
+        box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(126, 58, 58, 0.3);
+    
+
+        @include tablet{
+            max-width: 50rem;
+        }
+    }
+    .campo{
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 2rem;
+
+        label{
+            font-size: 1.7rem;
+            color: white;
+            font-weight: $bold;
+        }
+
+        input{
+            padding: .8rem;
+            font-size: 1.5rem;
+            border-radius: .5rem;
+
+            border: none;
+            margin-top: .7rem;
+            margin-bottom: .7rem;
+        }
+    }
+    .boton-agregar{
+        margin-top: 3rem;
+        width: 100%;
+        padding: 1rem;
+        border-radius: .5rem;
+        font-size: 2rem;
+        background-color:rgba(13, 12, 37, 0.959);
+        border: none;
+        color: white;
+
+    }
+}
+
+

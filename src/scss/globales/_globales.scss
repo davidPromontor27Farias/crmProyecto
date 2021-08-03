@@ -1,0 +1,21 @@
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+    min-height: 100%;
+    font-family: $fuente-princial;
+    h1, p, a{
+        color: white;
+    }
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+
+img{
+    width: 100%;
+    padding: 0;
+}

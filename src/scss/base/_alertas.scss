@@ -1,0 +1,16 @@
+.mensaje-error, .mensaje-correcto{
+    color: white;
+    font-size: 1.5rem;
+    background-color: rgba(223, 41, 41, 0.63);
+    padding: 1rem;
+    text-align: center;
+    border-radius: .5rem;
+    border: rgb(231, 28, 28) 1px solid ;
+
+}
+.mensaje-correcto{
+    background-color: rgb(39, 173, 39);
+    border: rgb(4, 128, 4) 1px solid;
+    
+
+}

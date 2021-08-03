@@ -1,0 +1,138 @@
+body{
+    background-color:rgba(24, 18, 48, 0.959);
+}
+
+.clientes-inicio{
+    display: flex;
+    flex-direction: column;
+    @include tablet{
+        flex-direction: row;
+        min-height: 100vh;
+    }
+
+
+    
+
+    .aside-inicio{
+        display: block;
+        flex-basis: 20%;
+        padding: 1rem;
+        background-color: rgb(245, 243, 243, .1);
+        -webkit-box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.3);
+        box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(126, 58, 58, 0.3);
+        
+    }
+    .aside-inicio, .cliente-informacion{
+        padding-top: 4rem;
+    }
+
+    .cliente-informacion{
+        flex-basis: 80%;
+     
+        .title{
+            text-align: center ;
+            font-size: 2rem;
+            text-transform: uppercase;
+        }
+
+
+
+    }
+}
+.aside-cliente{
+
+    h1{
+        text-transform: uppercase;
+        text-align: center;
+        font-size: 2rem;
+    }
+    span{
+        font-weight: $ultra-bold;
+        font-size: 2.5rem;
+        border-bottom: 1px solid white;
+    }
+    .DAJ{
+        color: rgb(17, 85, 173);
+    }
+    .corte{
+        color: rgb(204, 143, 201);
+    }
+    p{
+        text-align: center;
+        font-size: 2rem;
+        margin-top: 3rem;
+
+        @include tablet{
+            margin-top: 5rem;   
+            text-align: start;         
+        }
+    }
+}
+.navegacion{
+    margin-top: 2rem;
+
+    nav{
+        display: flex;
+        flex-direction: column;
+
+        a{
+            text-align: center;
+            margin-top: 1.3rem;
+            font-size: 1.5rem;
+            font-weight: $bold;
+            transition: .4s all ease-in;
+             padding: 1rem;
+
+            @include tablet{
+                text-align: start;
+            }
+
+            &:hover{
+                background-color: rgb(15, 14, 14, .2);
+                color:rgb(221, 218, 20)
+            }
+        }
+    }
+}
+.cliente-informacion{
+    padding: 1.5rem;
+
+   
+}
+.contenido-informacion{
+    margin-top: 4rem;
+    overflow-x: auto;
+
+    table{
+      
+        min-width: 900px;
+        margin: 0 auto;
+        -webkit-box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.3);
+        box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(126, 58, 58, 0.3);
+        
+        @include tablet{
+            min-width: 550px;
+        }
+
+
+
+        @include desktop{
+            min-width: 1000px;
+        }
+
+        .tabla-informacion{
+            background-color: rgb(255, 255, 255, .2);
+ 
+        }
+        
+        th{
+            padding: 1rem;
+            font-size: 1.5rem;
+            color: white;
+  
+        }
+   
+    }
+    
+
+}
