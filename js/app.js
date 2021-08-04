@@ -1,6 +1,8 @@
 //Creamos un ife para que lo que creemos aqui no se tope con lo demas
 (function(){
     let DB;
+    const divInformacion = document.querySelector('.body-informacion');
+
     document.addEventListener('DOMContentLoaded', ()=>{
 
        crearDB(); 
@@ -10,6 +12,8 @@
        if(window.indexedDB.open('crm', 1)){
            insertarCliente();
        }
+
+       divInformacion.addEventListener('click', eliminarRegistro);
     });
 
     //Crea la base de datos d eindexedDB
@@ -30,14 +34,14 @@
             const db = e.target.result;
 
             //le decimos su estructura y le pasamos el id para identificarlo por su id
-            const objectStore = db.createObjectStore('crm', {keypath: 'id', autoIncrement: 'true'});
+            const objectStore = db.createObjectStore('crm', { keyPath: 'id', autoIncrement: true});
 
 
             //creamos los campos con el nombre del campo, el nombre del keypath y si sera unico
             objectStore.createIndex('nombre', 'nombre', {unique: false});
             objectStore.createIndex('email', 'email', {unique: true});
             objectStore.createIndex('telefono', 'telefono', {unique: false});
-            objectStore.createIndex('nombre_empresa', 'nombre_empresa', {unique: false});
+            objectStore.createIndex('empresa', 'empresa', {unique: false});
             objectStore.createIndex('id', 'id', {unique: true});
 
             console.log('Base creada exitosamente');
@@ -69,7 +73,7 @@
                     //Extraemos los valores
                     const {nombre, email, telefono, empresa, id} = cursor.value;
                     
-                    const divInformacion = document.querySelector('.body-informacion');
+
                     divInformacion.classList.add('informacion-cliente');
                     divInformacion.innerHTML += `
                     <tr>
@@ -84,8 +88,8 @@
                             <p class="campos empresa">${empresa}</p>
                         </td>
                         <td>
-                            <a class="btn btn-editar" href="/editarCliente.html?id=${id}">Editar</a>
-                            <a class="btn btn-eliminar" data-cliente="${id}">Eliminar</a>
+                            <a class="btn btn-editar" href="editarCliente.html?id=${id}">Editar</a>
+                            <a class="btn btn-eliminar eliminar" data-cliente="${id}">Eliminar</a>
                         </td>
                     
                     </tr>
@@ -100,5 +104,34 @@
 
         }
 
+    }
+    function eliminarRegistro(e){
+
+        if(e.target.classList.contains('eliminar')){
+            //Accedemos al atributo de eliminar que fue puesto como data
+            const idEliminar = Number(e.target.dataset.cliente);
+            
+            //Confirmacion de eliminar
+            const confirmar = confirm('Deseas Eliminar el cliente');
+     
+
+            if(confirmar === true){
+
+                const transaction = DB.transaction(['crm'], 'readwrite');
+                const objectStore = transaction.objectStore('crm');
+                
+                objectStore.delete(idEliminar);
+
+
+                transaction.onerror = function(){
+       
+                }
+                transaction.oncomplete = function(){
+
+                    //Eliminar el registro seleccionado
+                    e.target.parentElement.parentElement.remove();
+                }
+            }
+        }
     }
 })();

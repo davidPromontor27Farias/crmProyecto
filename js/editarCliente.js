@@ -1,92 +1,140 @@
 (function(){
     let DB;
+    let idCliente;
+    //Selectores
     const nombreInput = document.querySelector('#nombre');
     const emailInput = document.querySelector('#email');
     const telefonoInput = document.querySelector('#telefono');
     const empresaInput = document.querySelector('#empresa');
-    const formulario = document.querySelector('.formulario')
 
+    const formulario = document.querySelector('.formulario');
 
     document.addEventListener('DOMContentLoaded', ()=>{
-        //Nos conectamos a la base de datos
         conectarDB();
 
-        formulario.addEventListener('submit', guardarEdicion);
-        //Verificamos el url 
-        const parametroURL = new URLSearchParams(window.location.search);
-        //obtenemos el id
-        const idCliente = parametroURL.get('id');
-        
-        //SI hay un id nos ejecutara la funcion
-
+        //Obtener el id
+        const parametrosURL = new URLSearchParams(window.location.search);
+        idCliente = parametrosURL.get('id');
+        //Si hay resuktados se ejecutara la funcion
         if(idCliente){
-            //Ponemos dentro de un settimeout ya que tarda cierto tiempo en consultar la base de datos
-            //
+
             setTimeout(() => {
-                editarCliente(idCliente);  
+               obtenerCliente(idCliente); 
             }, 100);
-          
+            
         }
 
-        
-
-
-    });
-
-    function editarCliente(id){
-        //Accedemos a la base de datos crm en su modo lectura y escritura
+        formulario.addEventListener('submit', editarCliente );
+    })
+    //Obtener el cliente
+    function obtenerCliente(id){
         const transaction = DB.transaction(['crm'], 'readonly');
-        //interactuamos con el objectStore
+        //interactuamos con la base de datos
         const objectStore = transaction.objectStore('crm');
-        
-        //Vamos a iterar sobe los resultados con un cursor
-        const cursorCliente = objectStore.openCursor()
-        cursorCliente.onsuccess = function(e){
-            //Le añadimos el resultado a la variable cursor
+        //Abrir solo una conexion
+        const cliente = objectStore.openCursor();
+        cliente.onsuccess = function(e){
             const cursor = e.target.result;
-            //Si todo salio bien se ejecutara lo siguiente
+
+            //Si hay un resultado se ejecutara lo siguiente
             if(cursor){
-        
-                //Si el cursor es igual al id del que queremos editar
+
+                //Para que solo nos traiga el seleccionado
                 if(cursor.value.id === Number(id)){
 
-                    //Funcion que llenara el formulario previo
+                    //Mandar a llamar la funcion que llenara el formulario
                     llenarFormulario(cursor.value);
                 }
+
                 cursor.continue();
             }
         }
     }
-    //Llenamos los campos con la informacion previa
-    function llenarFormulario(valores){
-        const {nombre, email, telefono, empresa} = valores;
+    //Conectarnos a la base de datos
+    function conectarDB(){
+        const abrirConexion = window.indexedDB.open('crm', 1);
+
+        abrirConexion.onerror = function(){
+            console.log('Hubo un error');
+        }
+        abrirConexion.onsuccess = function(){
+            DB = abrirConexion.result;
+        }
+    }
+
+    function llenarFormulario(datosCliente){
+        const {nombre, email, telefono, empresa} = datosCliente;
 
         nombreInput.value = nombre;
         emailInput.value = email;
         telefonoInput.value = telefono;
         empresaInput.value = empresa;
+
+
     }
-    
-
-
-    function conectarDB(){
-        //Abrimos la conexion
-        const conexionDB = window.indexedDB.open('crm', 1);
-        
-        conexionDB.onerror = function(){
-            console.log('Hubo un error');
-        }
-
-        conexionDB.onsuccess = function(){
-            DB = conexionDB.result;
-        }
-    }
-    function guardarEdicion(e){
+    //Editamos
+    function editarCliente(e){
         e.preventDefault();
-        if(nombreInput.value === '' || emailInput.value === '' || telefonoInput.value === '' || empresaInput.value === ''){
-            imprimirAlerta('Todos los campos son obligatorios', 'error');
+        //Validamos
+        if(nombreInput.value === ''|| emailInput.value === '' || telefonoInput.value === ''|| empresaInput.value === ''){
+            imprimirAlerta('Los campos no pueden ir vacios', 'error');
 
             return;
         }
+        //Actualizar los datos
+        const clienteActualizado = {
+            nombre: nombreInput.value,
+            email: emailInput.value,
+            telefono: telefonoInput.value,
+            empresa: empresaInput.value,
+            id: Number(idCliente),
+        }
+        const transaction = DB.transaction(['crm'], 'readwrite');
+        const objectStore = transaction.objectStore('crm');
+
+        objectStore.put(clienteActualizado);
+
+        transaction.onerror = function(){
+            imprimirAlerta('Hubo un error', 'error');
+        }
+        transaction.oncomplete = function(){
+            imprimirAlerta('Actualizado correctamente');
+
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        }
+
     }
+
+    function imprimirAlerta(alerta, tipo){
+        const mensaje = document.createElement('DIV');
+        mensaje.textContent = alerta;
+    
+        const advertencia = document.querySelector('.alerta');
+    
+        if(!advertencia){
+            
+            mensaje.classList.add('alerta');
+    
+            if( tipo === 'error'){
+                mensaje.classList.add('mensaje-error');
+            }
+            else{
+                mensaje.classList.add('mensaje-correcto');
+            }
+    
+            formulario.insertBefore(mensaje, document.querySelector('.boton-agregar'));
+    
+        
+            setTimeout(() => {
+                mensaje.remove();
+            }, 2000);
+    
+        }
+    
+    
+    }    
+
+
 })();
