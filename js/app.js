@@ -84,7 +84,7 @@
                             <p class="campos empresa">${empresa}</p>
                         </td>
                         <td>
-                            <a class="btn btn-editar" href="/editarCliente.html">Editar</a>
+                            <a class="btn btn-editar" href="/editarCliente.html?id=${id}">Editar</a>
                             <a class="btn btn-eliminar" data-cliente="${id}">Eliminar</a>
                         </td>
                     

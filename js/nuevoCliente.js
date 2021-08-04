@@ -4,26 +4,13 @@
     const formulario = document.querySelector('.formulario');
 
     document.addEventListener('DOMContentLoaded', ()=>{
-
+       
         //Nos conectamos a la base de datos que creamos en app.js
         conectarDB();
 
         formulario.addEventListener('submit', validarFormulario);
     });
     
-    function conectarDB(){
-        //Nos conectamos a la base de datos
-        const abrirConexion = window.indexedDB.open('crm', 1);
-
-        abrirConexion.onerror = function(){
-            console.log('Hubo un error');
-        }
-        abrirConexion.onsuccess = function(){
-            //Instancia de que todo se conecto bien
-            DB = abrirConexion.result;
-        }
-
-    }
 
     function validarFormulario(e){
         e.preventDefault();
@@ -39,9 +26,6 @@
             
             imprimirAlerta('Los campos no pueden estar vacios', 'error');
         }
-
-
-
         //Creamos un objeto con la informacion obtenida
 
         const cliente = {
@@ -76,42 +60,6 @@
                 window.location.href = 'index.html';
             }, 3000);
         }
-    }
-
-
-
-
-
-
-
-    function imprimirAlerta(alerta, tipo){
-        const mensaje = document.createElement('DIV');
-        mensaje.textContent = alerta;
-
-        const advertencia = document.querySelector('.alerta');
-
-        if(!advertencia){
-            mensaje.classList.add('alerta');
-
-            if( tipo === 'error'){
-                mensaje.classList.add('mensaje-error');
-            }
-            else{
-                mensaje.classList.add('mensaje-correcto');
-            }
-
-            formulario.insertBefore(mensaje, document.querySelector('.boton-agregar'));
-
-        
-            setTimeout(() => {
-                mensaje.remove();
-            }, 2000);
-
-        }
-
-
-
-
     }
 
 })();
